@@ -19,6 +19,7 @@ class ProfileController extends Controller
         
         $profile = new Profile;
         $form = $request->all();
+        \Debugbar::info($form);
         
         $profile->fill($form);
         $profile->save();
@@ -26,10 +27,37 @@ class ProfileController extends Controller
         return redirect('admin/profile/create');
     }
     
-    
-    public function edit()
+        public function index(Request $reqest)
     {
-        return view('admin.profile.edit');
+        $cont_title = $reqest->cond_title;
+        if($cont_title != '') {
+            $posts = Profile::where('title', $cont_title)->get();
+        }else {
+            $posts = Profile::all();
+        }
+        return view('admin.profile.index', ['posts' => $posts, 'cond_title' => $cont_title]);
+        
+    }
+    
+    public function edit(Request $request)
+    {
+        $profile = Profile::find($request->id);
+        if(empty($profile)) {
+            abort(404);
+        }
+        return view('admin.profile.edit', ['profile_form' => $profile]);
+        
+    }
+    
+    public function update(Request $request)
+    {
+        $this->validate($request, Profile::$rules);
+        $profile = Profile::find($request->id);
+        $profile_form = $request->all();
+        unset($profile_form['_token']);
+        $profile->fill($profile_form)->save();
+        
+        return redirect('admin/profile');
     }
     
 }

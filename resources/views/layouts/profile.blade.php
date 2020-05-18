@@ -38,8 +38,6 @@
                         <ul class="navbar-nav mr-auto">
                         </ul>
                         <ul class="navbar-nav mr-auto">
-                            <ul class="navbar-nav ml-auto">
-
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                         @else
