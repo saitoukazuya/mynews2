@@ -21,6 +21,7 @@
                         </div>
                         <div class="col-md-6">
                             <p class="body mx-auto">{{ str_limit($headline->body, 650) }}</p>
+                            <p>Hello World</p>
                         </div>
                     </div>
                 </div>
