@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Profile;
+use App\ProfileHistory;
+use Carbon\carbon;
+
 class ProfileController extends Controller
 {
     public function add()
@@ -31,7 +34,7 @@ class ProfileController extends Controller
     {
         $cont_title = $reqest->cond_title;
         if($cont_title != '') {
-            $posts = Profile::where('title', $cont_title)->get();
+            $posts = Profile::where('name', $cont_title)->get();
         }else {
             $posts = Profile::all();
         }
@@ -56,6 +59,11 @@ class ProfileController extends Controller
         $profile_form = $request->all();
         unset($profile_form['_token']);
         $profile->fill($profile_form)->save();
+        
+        $profiles_histories = new ProfileHistory;
+        $profiles_histories->profile_id = $profile->id;
+        $profiles_histories->edited_at = Carbon::now();
+        $profiles_histories->save();
         
         return redirect('admin/profile');
     }
