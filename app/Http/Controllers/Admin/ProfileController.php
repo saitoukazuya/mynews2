@@ -22,8 +22,7 @@ class ProfileController extends Controller
         
         $profile = new Profile;
         $form = $request->all();
-        \Debugbar::info($form);
-        
+
         $profile->fill($form);
         $profile->save();
         
